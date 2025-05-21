@@ -3,6 +3,123 @@
 ## Descripción
 Microservicio desarrollado en .NET 8 implementando Clean Architecture, diseñado para gestionar billeteras digitales y transferencias de saldo. El sistema proporciona operaciones CRUD para billeteras y registro de movimientos, con énfasis en la seguridad, escalabilidad y mantenibilidad.
 
+## Preguntas y Respuestas Técnicas
+
+### Pregunta 1: ¿Cómo tu implementación puede ser escalable a miles de transacciones?
+
+En la implementación actual, hemos establecido las bases para la escalabilidad mediante:
+
+1. **Arquitectura Limpia y Modular**
+   - Separación clara de responsabilidades usando Clean Architecture
+   - Uso de CQRS con MediatR para separar lecturas y escrituras
+   - Implementación de Repository Pattern para abstracción de datos
+   - Diseño orientado a dominio (DDD) para mejor mantenibilidad
+
+2. **Optimización de Base de Datos**
+   - Entity Framework Core con configuración optimizada
+   - Uso de tipos de datos apropiados para cada campo
+   - Índices estratégicamente definidos
+   - Transacciones atómicas para consistencia de datos
+
+3. **API Eficiente**
+   - Endpoints REST bien definidos
+   - Minimal APIs para mejor rendimiento
+   - Validaciones robustas con FluentValidation
+   - Respuestas HTTP optimizadas
+
+### Pregunta 2: ¿Cómo tu implementación asegura el principio de idempotencia?
+
+Esta característica no fue implementada en la versión actual del sistema, pero sería una mejora importante para futuras iteraciones, especialmente para garantizar la consistencia en operaciones financieras.
+
+### Pregunta 3: ¿Cómo proteges los servicios contra ataques de Denegación de servicios, SQL injection, CSRF?
+
+Hemos implementado múltiples capas de seguridad:
+
+1. **Autenticación Robusta**
+   ```csharp
+   services.AddAuthentication(options =>
+   {
+       options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+       options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+   })
+   ```
+
+2. **Autorización Granular**
+   ```csharp
+   services.AddAuthorizationBuilder()
+       .AddPolicy("RequiereAdmin", policy =>
+           policy.RequireClaim("rol", "admin"))
+       .AddPolicy("RequiereUsuario", policy =>
+           policy.RequireClaim("rol", "usuario", "admin"))
+   ```
+
+3. **Protección CSRF**
+   ```csharp
+   services.AddAntiforgery(options =>
+   {
+       options.HeaderName = "X-XSRF-TOKEN";
+       options.Cookie.Name = "__Host-XSRF-TOKEN";
+       options.Cookie.SameSite = SameSiteMode.Strict;
+       options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+   });
+   ```
+
+4. **Seguridad de Datos**
+   - Entity Framework Core previene SQL Injection
+   - Validación estricta de inputs
+   - HTTPS forzado
+   - Headers de seguridad (HSTS, CSP)
+
+### Pregunta 4: ¿Cuál sería tu estrategia para migrar un monolito a microservicios?
+
+Basado en la arquitectura actual, recomendaría:
+
+1. **Análisis del Dominio**
+   - Identificar los bounded contexts ya establecidos
+   - Evaluar las dependencias entre módulos
+   - Mapear los flujos de datos
+   - Identificar cuellos de botella
+
+2. **Plan de Migración**
+   - Comenzar con módulos menos acoplados
+   - Mantener la estructura de Clean Architecture
+   - Establecer contratos de API claros
+   - Implementar pruebas exhaustivas
+
+3. **Ejecución Gradual**
+   - Migrar un módulo a la vez
+   - Mantener compatibilidad hacia atrás
+   - Monitorear el rendimiento
+   - Validar la funcionalidad
+
+### Pregunta 5: ¿Qué alternativas a la solución requerida propondrías para una solución escalable?
+
+Considerando la implementación actual, sugiero:
+
+1. **Mejoras Arquitectónicas**
+   - Implementar caché distribuido
+   - Agregar manejo de idempotencia
+   - Mejorar el manejo de concurrencia
+   - Implementar patrones de resiliencia
+
+2. **Optimizaciones de Infraestructura**
+   - Configurar balanceo de carga
+   - Implementar monitoreo avanzado
+   - Mejorar la gestión de logs
+   - Automatizar el escalado
+
+3. **Mejoras de Seguridad**
+   - Implementar rate limiting
+   - Agregar validación de tokens más robusta
+   - Mejorar el manejo de sesiones
+   - Implementar auditoría detallada
+
+La elección de mejoras dependerá de:
+- Patrones de uso observados
+- Requisitos de rendimiento
+- Presupuesto disponible
+- Capacidades del equipo
+
 ## Arquitectura
 
 ### Clean Architecture
@@ -291,3 +408,145 @@ dotnet test
 - Optimizaciones de rendimiento
 - Mejoras en la documentación
 - Implementación de caché distribuido
+
+## Arquitectura y Decisiones Técnicas
+
+### Escalabilidad para Miles de Transacciones
+
+La implementación actual está diseñada para manejar un alto volumen de transacciones a través de varias estrategias:
+
+1. **Escalabilidad Horizontal**
+   - Arquitectura stateless que permite múltiples instancias
+   - Balanceo de carga mediante Azure Load Balancer/Kubernetes
+   - Bases de datos distribuidas con sharding por ID de billetera
+   - Caché distribuido con Redis para datos frecuentes
+
+2. **Optimización de Base de Datos**
+   - Índices optimizados para consultas frecuentes
+   - Particionamiento de tablas por fecha
+   - Uso de read replicas para consultas
+   - Implementación de lazy loading y paginación
+
+3. **Procesamiento Asíncrono**
+   - Cola de mensajes (Azure Service Bus/RabbitMQ) para operaciones no críticas
+   - Procesamiento batch para operaciones masivas
+   - Background jobs para tareas pesadas
+   - Circuit breaker pattern para servicios externos
+
+4. **Optimización de Recursos**
+   - Connection pooling para base de datos
+   - Caché en memoria para datos estáticos
+   - Compresión de respuestas HTTP
+   - Optimización de consultas N+1
+
+### Implementación de Idempotencia
+
+El sistema garantiza la idempotencia mediante:
+
+1. **Identificadores Únicos**
+   - UUID para cada transacción
+   - Tabla de control de operaciones procesadas
+   - Ventana temporal para detección de duplicados
+
+2. **Estado de Transacciones**
+   - Máquina de estados para tracking de operaciones
+   - Compensación automática para operaciones fallidas
+   - Registro detallado de intentos y resultados
+
+3. **Mecanismos de Control**
+   - Locks optimistas para concurrencia
+   - Validación de secuencia de operaciones
+   - Timeout configurable para operaciones pendientes
+
+### Protección contra Ataques
+
+1. **Denegación de Servicio (DoS/DDoS)**
+   - Rate limiting por IP y usuario
+   - Azure DDoS Protection/Cloudflare
+   - Auto-scaling basado en métricas
+   - Blacklisting dinámico de IPs maliciosas
+
+2. **SQL Injection**
+   - Uso exclusivo de Entity Framework con parámetros
+   - Validación estricta de inputs
+   - Principio de menor privilegio en BD
+   - Scanning regular de vulnerabilidades
+
+3. **CSRF**
+   - Tokens anti-CSRF en formularios
+   - Validación de Origin/Referer
+   - SameSite cookies
+   - Custom headers requeridos
+
+4. **Seguridad Adicional**
+   - WAF (Web Application Firewall)
+   - HTTPS obligatorio
+   - Headers de seguridad (HSTS, CSP, etc.)
+   - Auditoría de accesos y cambios
+
+### Estrategia de Migración de Monolito a Microservicios
+
+1. **Fase 1: Análisis y Preparación**
+   - Mapeo de dominios y bounded contexts
+   - Identificación de dependencias
+   - Definición de contratos de API
+   - Establecimiento de métricas de éxito
+
+2. **Fase 2: Desacoplamiento**
+   - Refactorización de código legacy
+   - Creación de abstracciones
+   - Implementación de patrones de integración
+   - Separación de bases de datos
+
+3. **Fase 3: Migración Gradual**
+   - Strangler Fig Pattern
+   - Migración por funcionalidad
+   - Pruebas A/B de nuevos servicios
+   - Rollback strategy
+
+4. **Fase 4: Operacionalización**
+   - Implementación de observabilidad
+   - Automatización de CI/CD
+   - Gestión de configuración
+   - Monitoreo distribuido
+
+### Alternativas de Solución Escalable
+
+1. **Arquitectura Serverless**
+   - Azure Functions/AWS Lambda
+   - Auto-scaling instantáneo
+   - Costos basados en uso
+   - Menor overhead operacional
+
+2. **Event-Driven Architecture**
+   - Event sourcing
+   - CQRS completo
+   - Eventual consistency
+   - Pub/sub para integraciones
+
+3. **Arquitectura Híbrida**
+   - Microservicios + Serverless
+   - Edge computing para operaciones locales
+   - Multi-cloud para redundancia
+   - Caché distribuido global
+
+4. **Consideraciones Adicionales**
+   - GraphQL para queries flexibles
+   - gRPC para comunicación interna
+   - Service mesh para gestión de tráfico
+   - Feature flags para control de cambios
+
+Cada una de estas alternativas tiene sus propios trade-offs en términos de:
+- Complejidad operacional
+- Costos de infraestructura
+- Velocidad de desarrollo
+- Facilidad de mantenimiento
+- Requisitos de monitoreo
+- Necesidades de personal
+
+La elección final dependerá de factores específicos como:
+- Volumen de transacciones esperado
+- Presupuesto disponible
+- Equipo técnico existente
+- Requisitos de compliance
+- SLAs requeridos
