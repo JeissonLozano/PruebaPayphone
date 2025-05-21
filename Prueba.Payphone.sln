@@ -1,0 +1,59 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35919.96
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prueba.Payphone.API", "Prueba.Payphone.API\Prueba.Payphone.API.csproj", "{FB7E42CC-06E6-36E4-E65B-078E4C50080B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prueba.Payphone.Aplicacion", "Prueba.Payphone.Aplicacion\Prueba.Payphone.Aplicacion.csproj", "{4EFFF16E-722F-127E-9CED-060D06982F40}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prueba.Payphone.Dominio", "Prueba.Payphone.Dominio\Prueba.Payphone.Dominio.csproj", "{FD4DBB6A-FA2B-A58B-FA6B-B1EE15B6B03A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prueba.Payphone.Infraestructura", "Prueba.Payphone.Infraestructura\Prueba.Payphone.Infraestructura.csproj", "{AAFB216A-25CD-6FCA-129B-CFAFE7899CF7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prueba.Payphone.Dominio.PruebasUnitarias", "Prueba.Payphone.Dominio.PruebasUnitarias\Prueba.Payphone.Dominio.PruebasUnitarias.csproj", "{17745A02-1D01-48E1-8F62-F993F5DA3B3C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prueba.Payphone.API.PruebasIntegracion", "Prueba.Payphone.API.PruebasIntegracion\Prueba.Payphone.API.PruebasIntegracion.csproj", "{7299F8A0-9949-4184-9182-0F85C2C0BA06}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Manifiesto", "Manifiesto", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		Manifiesto\manifiesto.yml = Manifiesto\manifiesto.yml
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FB7E42CC-06E6-36E4-E65B-078E4C50080B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB7E42CC-06E6-36E4-E65B-078E4C50080B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB7E42CC-06E6-36E4-E65B-078E4C50080B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB7E42CC-06E6-36E4-E65B-078E4C50080B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EFFF16E-722F-127E-9CED-060D06982F40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EFFF16E-722F-127E-9CED-060D06982F40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EFFF16E-722F-127E-9CED-060D06982F40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EFFF16E-722F-127E-9CED-060D06982F40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD4DBB6A-FA2B-A58B-FA6B-B1EE15B6B03A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD4DBB6A-FA2B-A58B-FA6B-B1EE15B6B03A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD4DBB6A-FA2B-A58B-FA6B-B1EE15B6B03A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD4DBB6A-FA2B-A58B-FA6B-B1EE15B6B03A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAFB216A-25CD-6FCA-129B-CFAFE7899CF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAFB216A-25CD-6FCA-129B-CFAFE7899CF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAFB216A-25CD-6FCA-129B-CFAFE7899CF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAFB216A-25CD-6FCA-129B-CFAFE7899CF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17745A02-1D01-48E1-8F62-F993F5DA3B3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17745A02-1D01-48E1-8F62-F993F5DA3B3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17745A02-1D01-48E1-8F62-F993F5DA3B3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17745A02-1D01-48E1-8F62-F993F5DA3B3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7299F8A0-9949-4184-9182-0F85C2C0BA06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7299F8A0-9949-4184-9182-0F85C2C0BA06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7299F8A0-9949-4184-9182-0F85C2C0BA06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7299F8A0-9949-4184-9182-0F85C2C0BA06}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D90D2EA7-2183-4B6D-832D-432FE4C64551}
+	EndGlobalSection
+EndGlobal
